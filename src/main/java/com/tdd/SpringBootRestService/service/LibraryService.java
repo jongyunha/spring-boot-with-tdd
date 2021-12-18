@@ -28,6 +28,11 @@ public class LibraryService {
   }
 
   @Transactional(readOnly = true)
+  public Optional<Library> findById(String bookId) {
+    return libraryRepository.findById(bookId);
+  }
+
+  @Transactional(readOnly = true)
   public boolean checkBookAlreadyExist(String bookId) {
     Optional<Library> book = libraryRepository.findById(bookId);
     return book.isPresent();
