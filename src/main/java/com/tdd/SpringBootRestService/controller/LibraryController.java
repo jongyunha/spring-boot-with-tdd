@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -53,5 +54,21 @@ public class LibraryController {
     addRes.setId(saveId);
     addRes.setMsg("success");
     return new ResponseEntity<>(addRes, HttpStatus.CREATED);
+  }
+
+  @PutMapping("updateBook/{id}")
+  public ResponseEntity<Library> updateBook(
+      @PathVariable(value = "id") String id, @RequestBody Library library) {
+    Optional<Library> byId = libraryService.findById(id);
+    if (byId.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    Library book = byId.get();
+    book.setAisle(library.getAisle());
+    book.setAuthor(library.getAuthor());
+    book.setBook_name(library.getBook_name());
+
+    libraryService.save(book);
+    return new ResponseEntity<Library>(book, HttpStatus.OK);
   }
 }
