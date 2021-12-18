@@ -1,0 +1,9 @@
+POST http://localhost:8080/addBook
+Content-Type: application/json
+
+{
+  "isbn": "testisbn",
+  "aisle": "12345",
+  "author": "jongyunha",
+  "book_name": "testbook"
+}
