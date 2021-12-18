@@ -1,7 +1,7 @@
 package com.tdd.SpringBootRestService.controller;
 
-import com.tdd.SpringBootRestService.repository.LibraryRepository;
 import com.tdd.SpringBootRestService.service.LibraryService;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class LibraryController {
 
   private final LibraryService libraryService;
 
-  @GetMapping("/getBooks/{id}")
+  @GetMapping("/getBook/{id}")
   @ResponseStatus(code = HttpStatus.OK)
   public Library getBookById(@PathVariable(value = "id") String id) {
     Optional<Library> book = libraryService.findById(id);
@@ -29,6 +29,12 @@ public class LibraryController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return book.get();
+  }
+
+  @GetMapping("getBooks/author")
+  @ResponseStatus(code = HttpStatus.OK)
+  public List<Library> getBookByAuthorName(@RequestParam(value = "authorname") String authorName) {
+    return libraryService.findAllByAuthor(authorName);
   }
 
   @PostMapping("/addBook")

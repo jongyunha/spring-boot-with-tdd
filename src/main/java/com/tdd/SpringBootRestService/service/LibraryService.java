@@ -2,6 +2,7 @@ package com.tdd.SpringBootRestService.service;
 
 import com.tdd.SpringBootRestService.controller.Library;
 import com.tdd.SpringBootRestService.repository.LibraryRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,10 @@ public class LibraryService {
   public String save(Library library) {
     Library saveBook = libraryRepository.save(library);
     return saveBook.getId();
+  }
+
+  public List<Library> findAllByAuthor(String authorName) {
+    return libraryRepository.findAllByAuthor(authorName);
   }
 
   @Transactional(readOnly = true)
