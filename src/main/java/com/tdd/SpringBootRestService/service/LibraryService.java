@@ -20,6 +20,7 @@ public class LibraryService {
   }
 
   public String buildId(String isbn, int aisle) {
+    if (isbn.startsWith("Z")) return "OLD_" + isbn + aisle;
     return isbn + aisle;
   }
 
