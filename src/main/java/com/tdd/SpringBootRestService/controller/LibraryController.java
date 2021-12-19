@@ -6,6 +6,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,12 @@ public class LibraryController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return book.get();
+  }
+
+  @GetMapping("/getBooks")
+  @ResponseStatus(code = HttpStatus.OK)
+  public List<Library> getBooks() {
+    return libraryService.findAll();
   }
 
   @GetMapping("getBooks/author")
@@ -69,6 +76,15 @@ public class LibraryController {
     book.setBook_name(library.getBook_name());
 
     libraryService.save(book);
-    return new ResponseEntity<Library>(book, HttpStatus.OK);
+    return new ResponseEntity<>(book, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/deleteBook")
+  public ResponseEntity<String> deleteBook(@RequestBody Library library) {
+    if (libraryService.delete(library.getId())) {
+      return new ResponseEntity<>("Book is deleted", HttpStatus.CREATED);
+    } else {
+      return new ResponseEntity<>("Book is not exist", HttpStatus.NOT_FOUND);
+    }
   }
 }

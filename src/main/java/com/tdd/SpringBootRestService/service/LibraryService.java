@@ -28,6 +28,10 @@ public class LibraryService {
     return saveBook.getId();
   }
 
+  public List<Library> findAll() {
+    return libraryRepository.findAll();
+  }
+
   public List<Library> findAllByAuthor(String authorName) {
     return libraryRepository.findAllByAuthor(authorName);
   }
@@ -41,5 +45,11 @@ public class LibraryService {
   public boolean checkBookAlreadyExist(String bookId) {
     Optional<Library> book = libraryRepository.findById(bookId);
     return book.isPresent();
+  }
+
+  public boolean delete(String bookId) {
+    if (!libraryRepository.existsById(bookId)) return false;
+    libraryRepository.deleteById(bookId);
+    return true;
   }
 }
