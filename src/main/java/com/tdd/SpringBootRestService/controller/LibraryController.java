@@ -4,6 +4,8 @@ import com.tdd.SpringBootRestService.service.LibraryService;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,14 +24,18 @@ import org.springframework.web.server.ResponseStatusException;
 public class LibraryController {
 
   private final LibraryService libraryService;
+  private final Logger logger = LoggerFactory.getLogger(LibraryController.class);
 
   @GetMapping("/getBook/{id}")
   @ResponseStatus(code = HttpStatus.OK)
   public Library getBookById(@PathVariable(value = "id") String id) {
     Optional<Library> book = libraryService.findById(id);
     if (book.isEmpty()) {
+      logger.info("Book exist so skipping creation");
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    logger.info("Book do not exist so creating one");
     return book.get();
   }
 
@@ -82,6 +88,7 @@ public class LibraryController {
   @DeleteMapping("/deleteBook")
   public ResponseEntity<String> deleteBook(@RequestBody Library library) {
     if (libraryService.delete(library.getId())) {
+      logger.info("Book is deleted");
       return new ResponseEntity<>("Book is deleted", HttpStatus.CREATED);
     } else {
       return new ResponseEntity<>("Book is not exist", HttpStatus.NOT_FOUND);
