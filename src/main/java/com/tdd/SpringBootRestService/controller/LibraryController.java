@@ -58,6 +58,7 @@ public class LibraryController {
 
     if (libraryService.checkBookAlreadyExist(bookId)) {
       addRes.setMsg("Book Already Exist");
+      addRes.setId(bookId);
       return new ResponseEntity<>(addRes, HttpStatus.ACCEPTED);
     }
 

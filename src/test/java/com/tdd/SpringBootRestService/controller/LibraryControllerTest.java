@@ -35,10 +35,15 @@ class LibraryControllerTest {
   @Test
   public void addBookTest() {
     when(libraryService.buildId(library.getIsbn(), library.getAisle())).thenReturn(library.getId());
-    when(libraryService.checkBookAlreadyExist(library.getId())).thenReturn(false);
+    when(libraryService.checkBookAlreadyExist(library.getId())).thenReturn(true);
 
     ResponseEntity<AddResponse> res = libraryController.addBookImplementation(library);
     System.out.println(res.getBody());
-    Assertions.assertEquals(res.getStatusCode(), HttpStatus.CREATED);
+    Assertions.assertEquals(res.getStatusCode(), HttpStatus.ACCEPTED);
+
+    AddResponse body = res.getBody();
+    assert body != null;
+    Assertions.assertEquals(library.getId(), body.getId());
+    Assertions.assertEquals("Book Already Exist", body.getMsg());
   }
 }
