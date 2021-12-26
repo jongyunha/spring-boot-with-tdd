@@ -2,9 +2,10 @@ package com.tdd.SpringBootRestService.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tdd.SpringBootRestService.repository.LibraryRepository;
 import com.tdd.SpringBootRestService.service.LibraryService;
@@ -68,6 +69,8 @@ class LibraryControllerTest {
 
     mockMvc
         .perform(post("/addBook").contentType(MediaType.APPLICATION_JSON).content(jsonString))
-        .andExpect(status().isCreated());
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(library.getId()));
   }
 }

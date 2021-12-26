@@ -4,7 +4,9 @@ import com.tdd.SpringBootRestService.controller.Library;
 import java.util.List;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
+@Repository
 @RequiredArgsConstructor
 public class LibraryRepositoryImpl implements LibraryRepositoryCustom {
 

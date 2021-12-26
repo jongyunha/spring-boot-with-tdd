@@ -3,7 +3,6 @@ package com.tdd.SpringBootRestService.controller;
 import com.tdd.SpringBootRestService.service.LibraryService;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequiredArgsConstructor
 public class LibraryController {
 
   private final LibraryService libraryService;
   private final Logger logger = LoggerFactory.getLogger(LibraryController.class);
+
+  public LibraryController(LibraryService libraryService) {
+    this.libraryService = libraryService;
+  }
 
   @GetMapping("/getBook/{id}")
   @ResponseStatus(code = HttpStatus.OK)
@@ -65,7 +67,7 @@ public class LibraryController {
     library.setId(bookId);
     String saveId = libraryService.save(library);
 
-    addRes.setId(saveId);
+    addRes.setId(bookId);
     addRes.setMsg("success");
     return new ResponseEntity<>(addRes, HttpStatus.CREATED);
   }
